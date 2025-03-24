@@ -1,0 +1,58 @@
+# ML-based-stroke-prediction
+
+import numpy as np
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+df=pd.read_csv("heart.disease.csv")
+
+df.head()
+df.shape
+df.info()
+df.isnull().sum()
+df.describe()
+df['target'].value_counts()
+
+x=df.drop(columns='target',axis=1)
+x
+y=df['target']
+y
+
+X_train,X_test,Y_train,Y_test=train_test_split(x,y, test_size=0.2, stratify=y, random_state=42)
+
+x.shape
+
+X_train.shape
+
+Y_train.shape
+
+Y_test.shape
+
+model=LogisticRegression()
+
+model.fit(X_train,Y_train)
+
+X_train_prediction=model.predict(X_train)
+training_accuracy=accuracy_score(X_train_prediction, Y_train)
+print(f"The training accuracy is{training_accuracy}")
+
+X_test_prediction=model.predict(X_test)
+testing_accuracy=accuracy_score(X_test_prediction, Y_test)
+print(f"The training accuracy is{testing_accuracy}")
+
+
+input_data=(40,1,2,140,289,0,0,172,0,0,1,)
+
+
+input_data=np.asarray(input_data)
+input_data=input_data.reshape(1,-1)
+prediction=model.predict(input_data)
+prediction
+
+if prediction[0]==0:
+    print("Good News the patient doesn't have any heart disease")
+else:
+    print("The patient should visit the doctor")
